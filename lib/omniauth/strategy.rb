@@ -175,6 +175,8 @@ module OmniAuth
     #
     # @param env [Hash] The Rack environment.
     def call!(env) # rubocop:disable CyclomaticComplexity, PerceivedComplexity
+      return @app.call(env) if env["REQUEST_METHOD"].to_s == "OPTIONS"
+
       unless env['rack.session']
         error = OmniAuth::NoSessionError.new('You must provide a session to use OmniAuth.')
         raise(error)
